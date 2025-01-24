@@ -42,10 +42,10 @@ There is no guarantee this works in all circumstances, it works for me in my env
 - `EmailSubject`: The subject of the email.
 - `EmailBody`: The body of the email. It can contain HTML code.
 - `AttachmentFilePath`: An optional file to attach to the email. If the attachment is a text or HTML file, placeholders in the format `{fieldname}` will be replaced with the corresponding data from the recipient list.
-- `UseAttachmentAsBody`: If checked, the content of the attachment file (if it is a text or HTML file) will be used as the email body.
+- `UseAttachmentAsBody`: If set to True, the content of the attachment file (if it is a text or HTML file) will be used as the email body.
 - `Debug`: If set to true, debug messages will be displayed.
 - `BccAddresses`: BCC email addresses.
-- `IncludeEmailListAsBcc`: If checked, the email list will be used as BCC recipients, and the 'From Address' will be used as the 'To' address.
+- `IncludeEmailListAsBcc`: If set to true, the email list will be used as BCC recipients, and the 'From Address' will be used as the 'To' address.
 
 ### Bulkmail Usage
 
