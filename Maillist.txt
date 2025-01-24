@@ -1,0 +1,2 @@
+"Name","Email","Product"
+"Somebody Somwehere","somebody@somwhere.com","The Bulk eMailer Script"
