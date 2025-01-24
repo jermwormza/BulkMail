@@ -6,6 +6,8 @@ The Bulk Email Sender is a PowerShell script that allows you to send bulk emails
 
 The related sendmail script uses Office 365/Azure Graph functionality to send emails instead of smtp which adds an extra level of security and identity protection. If these are not available to you, you may replace the sendmail.ps1 with a different script as long as the parameter names remain the same. Outgoing eMails will be in the sent Items of the sending account and requires. The from address should be a mailbox and the user sending should have "Send As" permissions (I haven't fully tested this yet, there may be some limitations).
 
+There is no guarantee this works in all circumstances, it works for me in my environment. If you would like to contribute improvements, *ask*.
+
 ## Prerequisites
 
 1. **Mailozaurr Module**: Install the required module by running the following command:
