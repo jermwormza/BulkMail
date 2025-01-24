@@ -2,7 +2,9 @@
 
 ## Overview
 
-The Bulk Email Sender is a PowerShell script that allows you to send bulk emails using a list of recipients from a CSV or Excel file. It uses the Microsoft Graph API and the `Mailozaurr` module to send emails.
+The Bulk Email Sender is a PowerShell script that allows you to send bulk emails using a list of recipients from a CSV or Excel file. It uses the Microsoft Graph API and the `Mailozaurr` module to send emails. It also has some limited 'mail merge' functionality where the specified body or a html/text attachment is used as the body coded with fields as {fieldname} and there is a matching fieldname in the recipients csv or excel file it will replace the placeholders with the data from the file. The Email column may contain multiple email addresses separated by a comma but there is no validation if addresses are valid.
+
+The related sendmail script uses Office 365/Azure Graph functionality to send emails instead of smtp which adds an extra level of security and identity protection. If these are not available to you, you may replace the sendmail.ps1 with a different script as long as the parameter names remain the same.
 
 ## Prerequisites
 
@@ -31,7 +33,7 @@ The Bulk Email Sender is a PowerShell script that allows you to send bulk emails
 
 ## Bulk Email Sender Script (`bulkmail.ps1`)
 
-### Parameters
+### Bulkmail Parameters
 
 - `FromAddress`: The email address from which the emails will be sent.
 - `EmailListFilePath`: The file containing the list of recipients. Supported formats are CSV and Excel (.xlsx). The file must include a header row with at least `Name` and `Email` fields.
@@ -43,7 +45,7 @@ The Bulk Email Sender is a PowerShell script that allows you to send bulk emails
 - `BccAddresses`: BCC email addresses.
 - `IncludeEmailListAsBcc`: If checked, the email list will be used as BCC recipients, and the 'From Address' will be used as the 'To' address.
 
-### Usage
+### Bulkmail Usage
 
 1. Run the script:
 
@@ -53,11 +55,11 @@ The Bulk Email Sender is a PowerShell script that allows you to send bulk emails
 
 2. If required parameters are not provided, a form will be displayed to input the necessary information.
 
-3. The options are saved and reused on the next run if nothing is specified on the command line.
+3. The options are saved and reused on the next run if nothing is specified on the command line. The saved options file is encrypted and is specific to each Computer and User it is run under.
 
 4. Any fields in the Email List file will be available to be replaced in the body text or in the attachment html/txt file using {field name}.
 
-### Help
+### Bulkmail Help
 
 The help button in the form provides detailed information about each field and the functionality of the script.
 
@@ -84,15 +86,14 @@ The help button in the form provides detailed information about each field and t
 2. If the credential file is not found or incomplete, a form will be displayed to input the necessary credentials (App ID, Tenant ID, and Secret value).
 
 3. The credentials are saved and reused on the next run if the credential file is found.
+   1. The credentials file is encrypted and can only be used by the same user on the same computer.
+   2. The credentials file name contains the Computer Name and User Name so the same folder can be ued by multiple users on multiple computers.
+   3. You cannot create a credential file for a different user. If you need to use a scheduled task service account, you must first login interactively using that account and run the script to create the credentials file, after the file is there the script can be used non-interactively.
 
-### Help Button
+### Sendmail Help
 
 The help button in the form provides detailed instructions to create and get the Application AppID and Tenant ID for Mailozaurr.
 
-## Logging
-
-Both scripts generate log files in the same directory as the scripts, containing debug messages and information about the email sending process.
-
 ## Note
 
-Ensure that the `sendmail.ps1` script is in the same directory as the `bulkmail.ps1` script for the Bulk Email Sender to function correctly.
+Ensure that the `sendmail.ps1` script is in the same directory as the `bulkmail.ps1` script for the Bulk Email Sender to function correctly. All configuration and credential files will be saved in the same folder as the script.

@@ -14,7 +14,8 @@ Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName Microsoft.VisualBasic
 
 $usedDialog = $false
-$optionsFilePath = Join-Path -Path (Split-Path -Parent $MyInvocation.MyCommand.Definition) -ChildPath "bulkmail_options.xml"
+$optionsFileName = "$env:COMPUTERNAME-$env:USERNAME-options.xml"
+$optionsFilePath = Join-Path -Path (Split-Path -Parent $MyInvocation.MyCommand.Definition) -ChildPath $optionsFileName
 
 # Function to write debug messages
 function Write-DebugMessage {
@@ -28,8 +29,35 @@ function Write-DebugMessage {
 
 # Function to update the command line preview
 function Update-CommandLinePreview {
-    $commandLine = "powershell.exe -File bulkmail.ps1 -FromAddress `"$($fromAddressTextbox.Text)`" -EmailListFilePath `"$($emailListFileTextbox.Text)`" -EmailSubject `"$($emailSubjectTextbox.Text)`" -EmailBody `"$($emailBodyTextbox.Text)`" -AttachmentFilePath `"$($attachmentFileTextbox.Text)`" -UseAttachmentAsBody:$($useAttachmentAsBodyCheckbox.Checked) -IncludeEmailListAsBcc:$($includeEmailListAsBccCheckbox.Checked)"
+    $commandLine = "bulkmail.ps1 -FromAddress `"$($fromAddressTextbox.Text)`" -EmailListFilePath `"$($emailListFileTextbox.Text)`" -EmailSubject `"$($emailSubjectTextbox.Text)`" -EmailBody `"$($emailBodyTextbox.Text)`" -AttachmentFilePath `"$($attachmentFileTextbox.Text)`" -UseAttachmentAsBody:$($useAttachmentAsBodyCheckbox.Checked) -IncludeEmailListAsBcc:$($includeEmailListAsBccCheckbox.Checked)"
     $commandLineTextbox.Text = $commandLine
+}
+
+# Function to encrypt and save options
+function Save-Options {
+    param (
+        [PSCustomObject]$Options,
+        [string]$FilePath
+    )
+    $secureString = $Options | ConvertTo-SecureString -AsPlainText -Force
+    $encryptedString = $secureString | ConvertFrom-SecureString
+    $encryptedString | Out-File -FilePath $FilePath
+}
+
+# Function to load and decrypt options
+function Import-Options {
+    param (
+        [string]$FilePath
+    )
+    $content = Get-Content -Path $FilePath -Raw
+    try {
+        $secureString = $content | ConvertTo-SecureString
+        $plainText = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secureString))
+        return $plainText | ConvertFrom-Json
+    } catch {
+        # If decryption fails, assume the file is not encrypted and load it as plain XML
+        return Import-Clixml -Path $FilePath
+    }
 }
 
 # Create form only if required parameters are not provided
@@ -37,7 +65,7 @@ if (-not ($FromAddress -and $EmailListFilePath -and $EmailSubject -and $EmailBod
     # Load saved options if they exist and no command line options are provided
     if (-not ($FromAddress -or $EmailListFilePath -or $EmailSubject -or $EmailBody -or $AttachmentFilePath -or $BccAddresses -or $IncludeEmailListAsBcc) -and (Test-Path $optionsFilePath)) {
         Write-DebugMessage "Loading saved options from file: $optionsFilePath"
-        $savedOptions = Import-Clixml -Path $optionsFilePath
+        $savedOptions = Import-Options -FilePath $optionsFilePath
         $FromAddress = $savedOptions.FromAddress
         $EmailListFilePath = $savedOptions.EmailListFilePath
         $EmailSubject = $savedOptions.EmailSubject
@@ -300,7 +328,7 @@ Configuration and help for the Sendmail script can be found in the Sendmail scri
         UseAttachmentAsBody = $UseAttachmentAsBody
         IncludeEmailListAsBcc = $IncludeEmailListAsBcc
     }
-    $options | Export-Clixml -Path $optionsFilePath
+    Save-Options -Options $options -FilePath $optionsFilePath
     Write-DebugMessage "Options saved to file: $optionsFilePath"
 }
 
