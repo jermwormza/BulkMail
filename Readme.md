@@ -1,0 +1,98 @@
+# Bulk Email Sender
+
+## Overview
+
+The Bulk Email Sender is a PowerShell script that allows you to send bulk emails using a list of recipients from a CSV or Excel file. It uses the Microsoft Graph API and the `Mailozaurr` module to send emails.
+
+## Prerequisites
+
+1. **Mailozaurr Module**: Install the required module by running the following command:
+
+   ```powershell
+   Install-Module -Name Mailozaurr
+   ```
+
+2. **Azure Application Registration**:
+   - Go to the Azure portal (<https://portal.azure.com/>).
+   - In the search bar at the top, type 'Azure Active Directory' and select it from the results.
+     - 'Manage Microsoft Entra ID' has replaced 'Azure Active Directory'.
+   - Under 'Manage', select 'App registrations'.
+   - Click on 'New registration' at the top.
+   - Fill in the required fields and click 'Register'.
+   - After registration, you will be taken to the app's overview page.
+   - Copy the 'Application (client) ID' - this is your AppID.
+   - Copy the 'Directory (tenant) ID' - this is your Tenant ID.
+   - Under 'Manage', select 'Certificates & secrets'.
+   - Click on 'New client secret' to generate a new secret value.
+   - Copy the secret value and store it securely. This will be used as the Client Secret.
+     - Do not store the Client Secret in plain text in your scripts. The script will encrypt the secret and store it in a file.
+     - You may store the Client Secret in a secure vault or key management system.
+     - If you lose the secret, you can generate a new one following the steps above.
+
+## Bulk Email Sender Script (`bulkmail.ps1`)
+
+### Parameters
+
+- `FromAddress`: The email address from which the emails will be sent.
+- `EmailListFilePath`: The file containing the list of recipients. Supported formats are CSV and Excel (.xlsx). The file must include a header row with at least `Name` and `Email` fields.
+- `EmailSubject`: The subject of the email.
+- `EmailBody`: The body of the email. It can contain HTML code.
+- `AttachmentFilePath`: An optional file to attach to the email. If the attachment is a text or HTML file, placeholders in the format `{fieldname}` will be replaced with the corresponding data from the recipient list.
+- `UseAttachmentAsBody`: If checked, the content of the attachment file (if it is a text or HTML file) will be used as the email body.
+- `Debug`: If set to true, debug messages will be displayed.
+- `BccAddresses`: BCC email addresses.
+- `IncludeEmailListAsBcc`: If checked, the email list will be used as BCC recipients, and the 'From Address' will be used as the 'To' address.
+
+### Usage
+
+1. Run the script:
+
+   ```powershell
+   .\bulkmail.ps1
+   ```
+
+2. If required parameters are not provided, a form will be displayed to input the necessary information.
+
+3. The options are saved and reused on the next run if nothing is specified on the command line.
+
+4. Any fields in the Email List file will be available to be replaced in the body text or in the attachment html/txt file using {field name}.
+
+### Help
+
+The help button in the form provides detailed information about each field and the functionality of the script.
+
+## Sendmail Script (`sendmail.ps1`)
+
+### Sendmail Parameters
+
+- `Body`: The body of the email. It can contain HTML code.
+- `Subject`: The subject of the email.
+- `To`: The email addresses of the recipients.
+- `From`: The email address from which the emails will be sent.
+- `Attachments`: An optional file to attach to the email. If the attachment is a text or HTML file, placeholders in the format `{fieldname}` will be replaced with the corresponding data from the recipient list.
+- `Debug`: If set to true, debug messages will be displayed.
+- `Bcc`: BCC email addresses.
+
+### Sendmail Usage
+
+1. Run the script:
+
+   ```powershell
+   .\sendmail.ps1
+   ```
+
+2. If the credential file is not found or incomplete, a form will be displayed to input the necessary credentials (App ID, Tenant ID, and Secret value).
+
+3. The credentials are saved and reused on the next run if the credential file is found.
+
+### Help Button
+
+The help button in the form provides detailed instructions to create and get the Application AppID and Tenant ID for Mailozaurr.
+
+## Logging
+
+Both scripts generate log files in the same directory as the scripts, containing debug messages and information about the email sending process.
+
+## Note
+
+Ensure that the `sendmail.ps1` script is in the same directory as the `bulkmail.ps1` script for the Bulk Email Sender to function correctly.
