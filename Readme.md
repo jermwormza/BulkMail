@@ -91,6 +91,7 @@ The help button in the form provides detailed information about each field and t
    1. The credentials file is encrypted and can only be used by the same user on the same computer.
    2. The credentials file name contains the Computer Name and User Name so the same folder can be ued by multiple users on multiple computers.
    3. You cannot create a credential file for a different user. If you need to use a scheduled task service account, you must first login interactively using that account and run the script to create the credentials file, after the file is there the script can be used non-interactively.
+   4. All this means that you may need a secret for each user you want to enable to do emailing using this script. You can add many secrets to the registered app, I haven't needed many so not sure if there are any limits.
 
 ### Sendmail Help
 
