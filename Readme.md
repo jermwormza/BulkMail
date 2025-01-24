@@ -4,7 +4,7 @@
 
 The Bulk Email Sender is a PowerShell script that allows you to send bulk emails using a list of recipients from a CSV or Excel file. It uses the Microsoft Graph API and the `Mailozaurr` module to send emails. It also has some limited 'mail merge' functionality where the specified body or a html/text attachment is used as the body coded with fields as {fieldname} and there is a matching fieldname in the recipients csv or excel file it will replace the placeholders with the data from the file. The Email column may contain multiple email addresses separated by a comma but there is no validation if addresses are valid.
 
-The related sendmail script uses Office 365/Azure Graph functionality to send emails instead of smtp which adds an extra level of security and identity protection. If these are not available to you, you may replace the sendmail.ps1 with a different script as long as the parameter names remain the same.
+The related sendmail script uses Office 365/Azure Graph functionality to send emails instead of smtp which adds an extra level of security and identity protection. If these are not available to you, you may replace the sendmail.ps1 with a different script as long as the parameter names remain the same. Outgoing eMails will be in the sent Items of the sending account and requires. The from address should be a mailbox and the user sending should have "Send As" permissions (I haven't fully tested this yet, there may be some limitations).
 
 ## Prerequisites
 
