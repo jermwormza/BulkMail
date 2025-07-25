@@ -26,12 +26,20 @@ There is no guarantee this works in all circumstances, it works for me in my env
    - After registration, you will be taken to the app's overview page.
    - Copy the 'Application (client) ID' - this is your AppID.
    - Copy the 'Directory (tenant) ID' - this is your Tenant ID.
-   - Under 'Manage', select 'Certificates & secrets'.
-   - Click on 'New client secret' to generate a new secret value.
-   - Copy the secret value and store it securely. This will be used as the Client Secret.
-     - Do not store the Client Secret in plain text in your scripts. The script will encrypt the secret and store it in a file.
-     - You may store the Client Secret in a secure vault or key management system.
-     - If you lose the secret, you can generate a new one following the steps above.
+
+3. **Add API Permissions (Mail.Send and Mail.ReadWrite)**:
+   - Under 'Manage', select 'API permissions'.
+   - Click on 'Add a permission'.
+   - Select 'Microsoft Graph'.
+   - Choose Application permissions'.
+   - In the search box, type 'Mail'.
+   - Check the boxes for 'Mail.Send' and 'Mail.ReadWrite'.
+   - Click 'Add permissions'.
+
+4. **Grant Admin Consent**:
+   - After adding the permissions, you will see them listed under 'Configured permissions'.
+   - Click the 'Grant admin consent for [Your Organization]' button (It shows as a link above the permissions list).
+   - Confirm the action when prompted. The status should update to 'Granted for [Your Organization]'.
 
 ## Bulk Email Sender Script (`bulkmail.ps1`)
 
