@@ -14,6 +14,7 @@ There is no guarantee this works in all circumstances, it works for me in my env
 
    ```powershell
    Install-Module -Name Mailozaurr
+   Install-Module -Name Microsoft.Graph
    ```
 
 2. **Azure Application Registration**:
