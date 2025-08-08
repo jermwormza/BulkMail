@@ -10,7 +10,7 @@ There is no guarantee this works in all circumstances, it works for me in my env
 
 ## Prerequisites
 
-1. **Mailozaurr Module**: Install the required module by running the following command:
+1. **Mailozaurr Module**: Install the required modules by running the following commands:
 
    ```powershell
    Install-Module -Name Mailozaurr
