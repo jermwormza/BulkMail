@@ -9,7 +9,7 @@ param(
     [String]$Subject = "Test Email " + (Get-Date -Format "yyyy-MM-dd HH:mm:ss"),
     [String[]]$To = "nobody@nowhere.com",
     [String]$From = "nobody@nowhere.com",
-    [String]$Attachments = "",
+    [String[]]$Attachments = "",
     [bool]$Debug = $false,
     [String]$Bcc = ""
 )
